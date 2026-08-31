@@ -9,12 +9,12 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class EntityPickRequestPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private int hotbarSlot;
+    public long runtimeEntityId;
+    public int hotbarSlot;
     /**
      * @since v465
      */
-    private boolean withData;
+    public boolean withData;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

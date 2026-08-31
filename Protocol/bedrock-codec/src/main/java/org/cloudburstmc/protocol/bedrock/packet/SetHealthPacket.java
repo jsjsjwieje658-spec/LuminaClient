@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetHealthPacket implements BedrockPacket {
-    private int health;
+    public int health;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

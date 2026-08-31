@@ -16,7 +16,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class ServerPresenceInfoPacket implements BedrockPacket {
 
-    private PresenceConfiguration presenceConfiguration;
+    public PresenceConfiguration presenceConfiguration;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -12,15 +12,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class MovePlayerPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private Vector3f position;
-    private Vector3f rotation;
-    private Mode mode;
-    private boolean onGround;
-    private long ridingRuntimeEntityId;
-    private TeleportationCause teleportationCause;
-    private int entityType;
-    private long tick;
+    public long runtimeEntityId;
+    public Vector3f position;
+    public Vector3f rotation;
+    public Mode mode;
+    public boolean onGround;
+    public long ridingRuntimeEntityId;
+    public TeleportationCause teleportationCause;
+    public int entityType;
+    public long tick;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

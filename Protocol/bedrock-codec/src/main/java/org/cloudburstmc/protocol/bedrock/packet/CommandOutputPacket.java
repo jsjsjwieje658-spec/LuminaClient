@@ -17,12 +17,12 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CommandOutputPacket implements BedrockPacket {
-    private final List<CommandOutputMessage> messages = new ObjectArrayList<>();
-    private CommandOriginData commandOriginData;
-    private CommandOutputType type;
-    private int successCount;
+    public final List<CommandOutputMessage> messages = new ObjectArrayList<>();
+    public CommandOriginData commandOriginData;
+    public CommandOutputType type;
+    public int successCount;
     @Nullable
-    private String data;
+    public String data;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

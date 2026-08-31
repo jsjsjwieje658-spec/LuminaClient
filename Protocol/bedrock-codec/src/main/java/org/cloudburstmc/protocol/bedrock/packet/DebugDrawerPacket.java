@@ -17,7 +17,7 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class DebugDrawerPacket implements BedrockPacket {
 
-    private final List<DebugShape> shapes = new ObjectArrayList<>();
+    public final List<DebugShape> shapes = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

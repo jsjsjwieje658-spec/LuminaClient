@@ -14,8 +14,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class SetPlayerFurnaceOptionsPacket implements BedrockPacket {
 
-    private FurnaceOptions options;
-    private FurnaceType type;
+    public FurnaceOptions options;
+    public FurnaceType type;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

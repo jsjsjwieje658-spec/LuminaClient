@@ -15,8 +15,8 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class OpenSignPacket implements BedrockPacket {
-    private Vector3i position;
-    private boolean frontSide;
+    public Vector3i position;
+    public boolean frontSide;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

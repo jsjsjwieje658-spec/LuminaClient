@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(doNotUseGetters = true)
 public class ServerStatsPacket implements BedrockPacket {
-    private float serverTime;
-    private float networkTime;
+    public float serverTime;
+    public float networkTime;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

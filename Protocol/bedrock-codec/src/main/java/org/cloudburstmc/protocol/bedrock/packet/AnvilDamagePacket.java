@@ -14,8 +14,8 @@ public class AnvilDamagePacket implements BedrockPacket {
     /**
      * @deprecated since v2168
      */
-    private int damage;
-    private Vector3i position;
+    public int damage;
+    public Vector3i position;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

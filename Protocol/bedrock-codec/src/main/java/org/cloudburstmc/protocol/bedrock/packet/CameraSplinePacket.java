@@ -19,7 +19,7 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class CameraSplinePacket implements BedrockPacket {
 
-    private List<CameraSplineDefinition> splines;
+    public List<CameraSplineDefinition> splines;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

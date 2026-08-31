@@ -12,8 +12,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class TickSyncPacket implements BedrockPacket {
-    private long requestTimestamp;
-    private long responseTimestamp;
+    public long requestTimestamp;
+    public long responseTimestamp;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

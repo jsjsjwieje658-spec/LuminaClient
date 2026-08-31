@@ -20,12 +20,12 @@ import java.util.Map;
 @ToString(doNotUseGetters = true)
 public class VoxelShapesPacket implements BedrockPacket {
 
-    private List<SerializableVoxelShape> shapes;
-    private Map<String, Integer> nameMap;
+    public List<SerializableVoxelShape> shapes;
+    public Map<String, Integer> nameMap;
     /**
      * @since v944
      */
-    private int customShapeCount;
+    public int customShapeCount;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

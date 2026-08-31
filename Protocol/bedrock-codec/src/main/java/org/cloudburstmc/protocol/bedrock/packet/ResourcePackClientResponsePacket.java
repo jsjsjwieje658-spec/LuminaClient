@@ -12,8 +12,8 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ResourcePackClientResponsePacket implements BedrockPacket {
-    private final List<String> packIds = new ObjectArrayList<>();
-    private Status status;
+    public final List<String> packIds = new ObjectArrayList<>();
+    public Status status;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

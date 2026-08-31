@@ -9,8 +9,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PositionTrackingDBClientRequestPacket implements BedrockPacket {
-    private Action action;
-    private int trackingId;
+    public Action action;
+    public int trackingId;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

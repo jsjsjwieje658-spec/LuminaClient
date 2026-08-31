@@ -15,8 +15,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class ServerboundDataDrivenScreenClosedPacket implements BedrockPacket {
 
-    private Integer formId;
-    private CloseReason closeReason;
+    public Integer formId;
+    public CloseReason closeReason;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

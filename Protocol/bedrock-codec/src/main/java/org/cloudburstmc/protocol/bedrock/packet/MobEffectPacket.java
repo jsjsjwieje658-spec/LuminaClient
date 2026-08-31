@@ -9,20 +9,20 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class MobEffectPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private Event event;
-    private int effectId;
-    private int amplifier;
-    private boolean particles;
-    private int duration;
+    public long runtimeEntityId;
+    public Event event;
+    public int effectId;
+    public int amplifier;
+    public boolean particles;
+    public int duration;
     /**
      * @since v662
      */
-    private long tick;
+    public long tick;
     /**
      * @since v897
      */
-    private boolean ambient;
+    public boolean ambient;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

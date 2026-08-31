@@ -13,12 +13,12 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class UpdateClientOptionsPacket implements BedrockPacket {
 
     @Nullable
-    private GraphicsMode graphicsMode;
+    public GraphicsMode graphicsMode;
     /**
      * @since v975
      */
     @Nullable
-    private Boolean filterProfanityChange;
+    public Boolean filterProfanityChange;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

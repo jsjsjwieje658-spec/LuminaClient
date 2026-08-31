@@ -10,11 +10,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ServerboundLoadingScreenPacket implements BedrockPacket {
-    private ServerboundLoadingScreenPacketType type;
+    public ServerboundLoadingScreenPacketType type;
     /**
      * Optional int, not present if null
      */
-    private Integer loadingScreenId;
+    public Integer loadingScreenId;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

@@ -20,25 +20,25 @@ import java.util.Map;
 @ToString(doNotUseGetters = true)
 public class GraphicsParameterOverridePacket implements BedrockPacket {
 
-    private String biomeIdentifier;
-    private GraphicsOverrideParameterType parameterType;
-    private Map<Float, Vector3f> values;
-    private boolean reset;
+    public String biomeIdentifier;
+    public GraphicsOverrideParameterType parameterType;
+    public Map<Float, Vector3f> values;
+    public boolean reset;
     /**
      * @since v924
      */
     @Nullable
-    private Float floatValue;
+    public Float floatValue;
     /**
      * @since v924
      */
     @Nullable
-    private Vector3f vec3Value;
+    public Vector3f vec3Value;
     /**
      * @since v1001
      */
     @Nullable
-    private String playerIdentifier;
+    public String playerIdentifier;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

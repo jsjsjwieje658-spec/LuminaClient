@@ -256,7 +256,7 @@ public class BedrockPacketType {
     public static final BedrockPacketType RECORD_STARTED = new BedrockPacketType("RECORD_STARTED");
 
     @Getter
-    private final String name;
+    public final String name;
 
     public BedrockPacketType(String name) {
         this.name = name;

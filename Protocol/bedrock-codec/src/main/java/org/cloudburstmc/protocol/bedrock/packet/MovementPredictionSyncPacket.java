@@ -17,33 +17,33 @@ import java.util.Set;
  * ClientMovementPredictionSyncPacket
  */
 public class MovementPredictionSyncPacket implements BedrockPacket {
-    private long runtimeEntityId;
+    public long runtimeEntityId;
 
-    private final Set<EntityFlag> flags = new ObjectOpenHashSet<>();
-    private Vector3f boundingBox;
+    public final Set<EntityFlag> flags = new ObjectOpenHashSet<>();
+    public Vector3f boundingBox;
 
-    private float speed;
-    private float underwaterSpeed;
-    private float lavaSpeed;
-    private float jumpStrength;
-    private float health;
-    private float hunger;
+    public float speed;
+    public float underwaterSpeed;
+    public float lavaSpeed;
+    public float jumpStrength;
+    public float health;
+    public float hunger;
     /**
      * @since v975
      */
     @Deprecated
-    private float unknown1;
+    public float unknown1;
     /**
      * @since v975
      */
     @Deprecated
-    private float unknown2;
+    public float unknown2;
     /**
      * @since v975
      */
     @Deprecated
-    private float unknown3;
-    private boolean flying;
+    public float unknown3;
+    public boolean flying;
 
 
     @Override

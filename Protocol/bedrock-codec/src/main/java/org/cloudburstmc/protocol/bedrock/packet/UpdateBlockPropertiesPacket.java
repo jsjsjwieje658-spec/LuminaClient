@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateBlockPropertiesPacket implements BedrockPacket {
-    private NbtMap properties;
+    public NbtMap properties;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

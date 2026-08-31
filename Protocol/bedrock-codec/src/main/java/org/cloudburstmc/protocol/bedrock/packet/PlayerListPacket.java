@@ -16,11 +16,11 @@ import java.util.UUID;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlayerListPacket implements BedrockPacket {
-    private final List<Entry> entries = new ObjectArrayList<>();
+    public final List<Entry> entries = new ObjectArrayList<>();
     /**
      * @deprecated since v2168, now in Entry
      */
-    private Action action;
+    public Action action;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -43,22 +43,22 @@ public class PlayerListPacket implements BedrockPacket {
         /**
          * @since v2168
          */
-        private Action action;
-        private final UUID uuid;
-        private long entityId;
-        private CharSequence name;
-        private String xuid;
-        private String platformChatId;
-        private BuildPlatform buildPlatform = BuildPlatform.UNKNOWN;
+    public Action action;
+    public final UUID uuid;
+    public long entityId;
+        public CharSequence name;
+    public String xuid;
+    public String platformChatId;
+        public BuildPlatform buildPlatform = BuildPlatform.UNKNOWN;
         private SerializedSkin skin;
-        private boolean teacher;
-        private boolean host;
+    public boolean teacher;
+    public boolean host;
         /**
          * @deprecated since v2168, now in SerializedSkin
          */
-        private boolean trustedSkin;
-        private boolean subClient;
-        private Color color;
+    public boolean trustedSkin;
+    public boolean subClient;
+        public Color color;
 
         public String getName() {
             return getName(String.class);

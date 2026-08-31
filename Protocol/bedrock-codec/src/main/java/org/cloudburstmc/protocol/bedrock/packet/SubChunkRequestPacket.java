@@ -13,12 +13,12 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SubChunkRequestPacket implements BedrockPacket {
-    private int dimension;
-    private Vector3i subChunkPosition;
+    public int dimension;
+    public Vector3i subChunkPosition;
     /**
      * @since v485
      */
-    private List<Vector3i> positionOffsets = new ObjectArrayList<>();
+    public List<Vector3i> positionOffsets = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

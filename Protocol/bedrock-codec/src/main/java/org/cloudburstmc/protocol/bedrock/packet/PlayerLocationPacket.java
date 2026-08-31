@@ -11,9 +11,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class PlayerLocationPacket implements BedrockPacket {
 
-    private Type type;
-    private long targetEntityId;
-    private Vector3f position;
+    public Type type;
+    public long targetEntityId;
+    public Vector3f position;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

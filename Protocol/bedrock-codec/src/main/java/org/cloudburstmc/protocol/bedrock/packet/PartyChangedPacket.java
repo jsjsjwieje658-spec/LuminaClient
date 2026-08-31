@@ -18,7 +18,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class PartyChangedPacket implements BedrockPacket {
 
     @Nullable
-    private PartyInfo party;
+    public PartyInfo party;
 
     @Value
     public static class PartyInfo {

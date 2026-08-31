@@ -17,14 +17,14 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class ClientboundTextureShiftPacket implements BedrockPacket {
 
-    private Action action;
-    private String collectionName;
-    private String fromStep;
-    private String toStep;
-    private List<String> allSteps;
-    private long currentLengthTicks;
-    private long totalLengthTicks;
-    private boolean enabled;
+    public Action action;
+    public String collectionName;
+    public String fromStep;
+    public String toStep;
+    public List<String> allSteps;
+    public long currentLengthTicks;
+    public long totalLengthTicks;
+    public boolean enabled;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

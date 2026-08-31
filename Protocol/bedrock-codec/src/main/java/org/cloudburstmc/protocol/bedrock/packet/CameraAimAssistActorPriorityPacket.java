@@ -19,7 +19,7 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class CameraAimAssistActorPriorityPacket implements BedrockPacket {
 
-    private List<AimAssistActorPriorityData> priorityData;
+    public List<AimAssistActorPriorityData> priorityData;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

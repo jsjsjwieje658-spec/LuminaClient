@@ -10,10 +10,10 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AddHangingEntityPacket implements BedrockPacket {
-    private long uniqueEntityId;
-    private long runtimeEntityId;
-    private Vector3f position;
-    private int direction;
+    public long uniqueEntityId;
+    public long runtimeEntityId;
+    public Vector3f position;
+    public int direction;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

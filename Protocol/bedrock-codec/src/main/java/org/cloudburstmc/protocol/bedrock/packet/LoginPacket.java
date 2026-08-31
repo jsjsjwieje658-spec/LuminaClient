@@ -13,17 +13,17 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(doNotUseGetters = true)
 public class LoginPacket implements BedrockPacket {
-    private int protocolVersion;
+    public int protocolVersion;
     /**
      * The JWT payload signed by Minecraft's authentication server.
      * Assuming this is a valid signature, it can be trusted to contain the player's identity and other information.
      */
-    private AuthPayload authPayload;
+    public AuthPayload authPayload;
     /**
      * The JWT payload signed by the client.
      * The client can modify this, so it should not be trusted.
      */
-    private String clientJwt;
+    public String clientJwt;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

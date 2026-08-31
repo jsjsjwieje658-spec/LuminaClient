@@ -9,9 +9,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class GuiDataPickItemPacket implements BedrockPacket {
-    private String description;
-    private String itemEffects;
-    private int hotbarSlot;
+    public String description;
+    public String itemEffects;
+    public int hotbarSlot;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

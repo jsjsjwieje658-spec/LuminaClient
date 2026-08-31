@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ShowProfilePacket implements BedrockPacket {
-    private String xuid;
+    public String xuid;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

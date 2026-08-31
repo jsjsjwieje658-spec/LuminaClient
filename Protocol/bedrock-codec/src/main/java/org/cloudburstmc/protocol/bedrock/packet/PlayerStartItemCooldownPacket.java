@@ -10,8 +10,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class PlayerStartItemCooldownPacket implements BedrockPacket {
 
-    private String itemCategory;
-    private int cooldownDuration;
+    public String itemCategory;
+    public int cooldownDuration;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

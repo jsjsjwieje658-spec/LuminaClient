@@ -16,7 +16,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class ClientboundAttributeLayerSyncPacket implements BedrockPacket {
 
-    private AttributeLayerSyncPayload data;
+    public AttributeLayerSyncPayload data;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

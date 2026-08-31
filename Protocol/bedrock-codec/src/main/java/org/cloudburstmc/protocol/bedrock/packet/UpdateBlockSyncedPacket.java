@@ -8,8 +8,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = true)
 public class UpdateBlockSyncedPacket extends UpdateBlockPacket {
-    private long runtimeEntityId;
-    private BlockSyncType entityBlockSyncType;
+    public long runtimeEntityId;
+    public BlockSyncType entityBlockSyncType;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -19,11 +19,11 @@ import java.util.UUID;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CraftingEventPacket implements BedrockPacket {
-    private final List<ItemData> inputs = new ObjectArrayList<>();
-    private final List<ItemData> outputs = new ObjectArrayList<>();
-    private byte containerId;
-    private CraftingType type;
-    private UUID uuid;
+    public final List<ItemData> inputs = new ObjectArrayList<>();
+    public final List<ItemData> outputs = new ObjectArrayList<>();
+    public byte containerId;
+    public CraftingType type;
+    public UUID uuid;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

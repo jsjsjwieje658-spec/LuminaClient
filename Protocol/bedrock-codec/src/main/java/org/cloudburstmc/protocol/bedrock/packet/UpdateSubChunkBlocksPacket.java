@@ -14,10 +14,10 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateSubChunkBlocksPacket implements BedrockPacket {
-    private Vector3i position;
+    public Vector3i position;
 
-    private final List<BlockChangeEntry> standardBlocks = new ObjectArrayList<>();
-    private final List<BlockChangeEntry> extraBlocks = new ObjectArrayList<>();
+    public final List<BlockChangeEntry> standardBlocks = new ObjectArrayList<>();
+    public final List<BlockChangeEntry> extraBlocks = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

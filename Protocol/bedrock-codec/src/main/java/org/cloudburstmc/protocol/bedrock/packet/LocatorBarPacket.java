@@ -21,7 +21,7 @@ import java.util.UUID;
 @ToString(doNotUseGetters = true)
 public class LocatorBarPacket implements BedrockPacket {
 
-    private List<Payload> waypoints = new ArrayList<>();
+    public List<Payload> waypoints = new ArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

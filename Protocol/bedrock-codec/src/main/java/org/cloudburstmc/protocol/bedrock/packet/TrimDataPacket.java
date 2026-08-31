@@ -15,8 +15,8 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class TrimDataPacket implements BedrockPacket {
-    private final List<TrimPattern> patterns = new ObjectArrayList<>();
-    private final List<TrimMaterial> materials = new ObjectArrayList<>();
+    public final List<TrimPattern> patterns = new ObjectArrayList<>();
+    public final List<TrimMaterial> materials = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

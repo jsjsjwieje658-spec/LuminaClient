@@ -21,7 +21,7 @@ public class AnimateEntityPacket implements BedrockPacket {
      * @param animation entity animation
      * @return entity animation
      */
-    private String animation;
+    public String animation;
 
     /**
      * The entity state to move to when the animation has finished playing.
@@ -29,7 +29,7 @@ public class AnimateEntityPacket implements BedrockPacket {
      * @param nextState state after animation has finished
      * @return state after animation has finished
      */
-    private String nextState;
+    public String nextState;
 
     /**
      * Expression to check if the animation needs to stop.
@@ -37,7 +37,7 @@ public class AnimateEntityPacket implements BedrockPacket {
      * @param stopExpression molang expression (???)
      * @return molang expression (???)
      */
-    private String stopExpression;
+    public String stopExpression;
 
     /**
      * The molang stop expression version
@@ -47,7 +47,7 @@ public class AnimateEntityPacket implements BedrockPacket {
      *
      * @since v465
      */
-    private int stopExpressionVersion;
+    public int stopExpressionVersion;
 
 
     /**
@@ -56,7 +56,7 @@ public class AnimateEntityPacket implements BedrockPacket {
      * @param controller controller name
      * @return controller name
      */
-    private String controller;
+    public String controller;
 
     /**
      * Time taken to blend out of the specified animation.
@@ -64,7 +64,7 @@ public class AnimateEntityPacket implements BedrockPacket {
      * @param blendOutTime time
      * @return time
      */
-    private float blendOutTime;
+    public float blendOutTime;
 
     /**
      * Entity runtime IDs to run the animation on when sent to the client.
@@ -72,7 +72,7 @@ public class AnimateEntityPacket implements BedrockPacket {
      * @param runtimeEntityIds runtime entity IDs list
      * @return runtime entity IDs list
      */
-    private final LongList runtimeEntityIds = new LongArrayList();
+    public final LongList runtimeEntityIds = new LongArrayList();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

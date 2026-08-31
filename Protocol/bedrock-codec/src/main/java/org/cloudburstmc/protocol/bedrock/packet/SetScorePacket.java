@@ -16,8 +16,8 @@ public class SetScorePacket implements BedrockPacket {
     /**
      * @deprecated since v2168, now uses ScorerType from ScoreInfo
      */
-    private Action action;
-    private List<ScoreInfo> infos = new ObjectArrayList<>();
+    public Action action;
+    public List<ScoreInfo> infos = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

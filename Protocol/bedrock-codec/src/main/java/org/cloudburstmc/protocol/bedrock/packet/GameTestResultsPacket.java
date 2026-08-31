@@ -9,9 +9,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(doNotUseGetters = true)
 public class GameTestResultsPacket implements BedrockPacket {
-    private boolean successful;
-    private String error;
-    private String testName;
+    public boolean successful;
+    public String error;
+    public String testName;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

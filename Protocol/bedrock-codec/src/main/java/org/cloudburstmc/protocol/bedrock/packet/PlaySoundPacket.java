@@ -11,28 +11,28 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlaySoundPacket implements BedrockPacket {
-    private String sound;
-    private Vector3f position;
-    private float volume;
-    private float pitch;
+    public String sound;
+    public Vector3f position;
+    public float volume;
+    public float pitch;
     /**
      * @since v2168
      */
-    private int loopCount;
+    public int loopCount;
     /**
      * @since v975
      */
     @Nullable
-    private Long serverSoundHandle;
+    public Long serverSoundHandle;
     /**
      * @since v2192
      */
-    private boolean bypassListenerRangeCheck;
+    public boolean bypassListenerRangeCheck;
     /**
      * @since v2192
      */
     @Nullable
-    private Float playbackPositionSeconds;
+    public Float playbackPositionSeconds;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

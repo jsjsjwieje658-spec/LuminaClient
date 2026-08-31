@@ -10,14 +10,14 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class LecternUpdatePacket implements BedrockPacket {
-    private int page;
-    private int totalPages;
-    private Vector3i blockPosition;
+    public int page;
+    public int totalPages;
+    public Vector3i blockPosition;
     /**
      * @deprecated since v662
      */
     @Deprecated
-    private boolean droppingBook;
+    public boolean droppingBook;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

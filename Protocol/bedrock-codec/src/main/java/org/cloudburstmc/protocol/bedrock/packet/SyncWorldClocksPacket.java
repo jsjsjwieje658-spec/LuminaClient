@@ -18,7 +18,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class SyncWorldClocksPacket implements BedrockPacket {
 
-    private SyncWorldClocksPayload data;
+    public SyncWorldClocksPayload data;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

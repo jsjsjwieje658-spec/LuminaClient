@@ -10,17 +10,17 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ShowStoreOfferPacket implements BedrockPacket {
-    private String offerId;
+    public String offerId;
     /**
      * @since v630 deprecated
      */
     @Deprecated
-    private boolean shownToAll;
+    public boolean shownToAll;
 
     /**
      * @since v630
      */
-    private StoreOfferRedirectType redirectType;
+    public StoreOfferRedirectType redirectType;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

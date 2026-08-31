@@ -18,11 +18,11 @@ public class BiomeDefinitionListPacket implements BedrockPacket {
     /**
      * @deprecated As of v800 (1.21.80) the biomes are no longer sent as NBT. Use {@link #biomes} instead.
      */
-    private NbtMap definitions;
+    public NbtMap definitions;
     /**
      * @since v800 (1.21.80)
      */
-    private BiomeDefinitions biomes;
+    public BiomeDefinitions biomes;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

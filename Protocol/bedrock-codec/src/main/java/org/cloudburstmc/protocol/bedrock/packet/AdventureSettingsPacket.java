@@ -19,10 +19,10 @@ import java.util.Set;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AdventureSettingsPacket implements BedrockPacket {
-    private final Set<AdventureSetting> settings = EnumSet.noneOf(AdventureSetting.class);
-    private CommandPermission commandPermission = CommandPermission.ANY;
-    private PlayerPermission playerPermission = PlayerPermission.VISITOR;
-    private long uniqueEntityId;
+    public final Set<AdventureSetting> settings = EnumSet.noneOf(AdventureSetting.class);
+    public CommandPermission commandPermission = CommandPermission.ANY;
+    public PlayerPermission playerPermission = PlayerPermission.VISITOR;
+    public long uniqueEntityId;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

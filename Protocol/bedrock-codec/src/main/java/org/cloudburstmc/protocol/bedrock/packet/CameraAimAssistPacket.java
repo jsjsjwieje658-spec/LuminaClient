@@ -11,18 +11,18 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CameraAimAssistPacket implements BedrockPacket {
-    private Vector2f viewAngle;
-    private float distance;
-    private TargetMode targetMode;
-    private AimAssistAction action;
+    public Vector2f viewAngle;
+    public float distance;
+    public TargetMode targetMode;
+    public AimAssistAction action;
     /**
      * @since v766
      */
-    private String presetId;
+    public String presetId;
     /**
      * @since v827
      */
-    private boolean showDebugRender;
+    public boolean showDebugRender;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

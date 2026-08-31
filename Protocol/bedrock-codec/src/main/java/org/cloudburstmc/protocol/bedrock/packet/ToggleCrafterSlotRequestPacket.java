@@ -10,9 +10,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ToggleCrafterSlotRequestPacket implements BedrockPacket {
-    private Vector3i blockPosition;
-    private byte slot;
-    private boolean disabled;
+    public Vector3i blockPosition;
+    public byte slot;
+    public boolean disabled;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

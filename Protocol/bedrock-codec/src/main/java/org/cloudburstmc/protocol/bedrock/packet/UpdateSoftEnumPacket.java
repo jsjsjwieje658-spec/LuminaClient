@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateSoftEnumPacket implements BedrockPacket {
-    private CommandEnumData softEnum;
-    private SoftEnumUpdateType type;
+    public CommandEnumData softEnum;
+    public SoftEnumUpdateType type;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

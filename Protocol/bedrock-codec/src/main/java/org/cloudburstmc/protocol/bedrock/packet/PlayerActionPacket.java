@@ -11,14 +11,14 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlayerActionPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private PlayerActionType action;
-    private Vector3i blockPosition;
+    public long runtimeEntityId;
+    public PlayerActionType action;
+    public Vector3i blockPosition;
     /**
      * @since v526
      */
-    private Vector3i resultPosition;
-    private int face;
+    public Vector3i resultPosition;
+    public int face;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -12,18 +12,18 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class LevelSoundEventPacket implements BedrockPacket {
-    private SoundEvent sound;
-    private Vector3f position;
-    private int extraData;
-    private String identifier;
-    private boolean babySound;
-    private boolean relativeVolumeDisabled;
-    private long entityUniqueId;
+    public SoundEvent sound;
+    public Vector3f position;
+    public int extraData;
+    public String identifier;
+    public boolean babySound;
+    public boolean relativeVolumeDisabled;
+    public long entityUniqueId;
     /**
      * @since v975
      */
     @Nullable
-    private Vector3f fireAtPosition;
+    public Vector3f fireAtPosition;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

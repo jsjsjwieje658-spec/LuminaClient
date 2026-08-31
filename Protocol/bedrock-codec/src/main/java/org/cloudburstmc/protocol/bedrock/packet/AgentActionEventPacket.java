@@ -13,12 +13,12 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AgentActionEventPacket implements BedrockPacket {
-    private String requestId;
-    private AgentActionType actionType;
+    public String requestId;
+    public AgentActionType actionType;
     /**
      * @see AgentActionType for type specific JSON
      */
-    private String responseJson;
+    public String responseJson;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

@@ -19,7 +19,7 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class ClientboundDataStorePacket implements BedrockPacket {
 
-    private List<DataStoreAction> updates = new ArrayList<>();
+    public List<DataStoreAction> updates = new ArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

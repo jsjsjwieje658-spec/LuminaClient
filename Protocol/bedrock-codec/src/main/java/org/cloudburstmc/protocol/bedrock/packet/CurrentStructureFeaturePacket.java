@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CurrentStructureFeaturePacket implements BedrockPacket {
-    private String currentStructureFeature;
+    public String currentStructureFeature;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

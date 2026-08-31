@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class MultiplayerSettingsPacket implements BedrockPacket {
-    private MultiplayerMode mode;
+    public MultiplayerMode mode;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

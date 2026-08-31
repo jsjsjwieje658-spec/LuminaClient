@@ -15,17 +15,17 @@ public class AnimatePacket implements BedrockPacket {
     /**
      * @deprecated since v897
      */
-    private float rowingTime;
-    private Action action;
-    private long runtimeEntityId;
+    public float rowingTime;
+    public Action action;
+    public long runtimeEntityId;
     /**
      * @since v859
      */
-    private float data;
+    public float data;
     /**
      * @since v897
      */
-    private SwingSource swingSource = SwingSource.NONE;
+    public SwingSource swingSource = SwingSource.NONE;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -72,7 +72,7 @@ public class AnimatePacket implements BedrockPacket {
         }
 
         @Getter
-        private final String name;
+    public final String name;
 
         SwingSource(String name) {
             this.name = name;

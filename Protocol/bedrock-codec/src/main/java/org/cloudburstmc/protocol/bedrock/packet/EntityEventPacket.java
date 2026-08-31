@@ -12,14 +12,14 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class EntityEventPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private EntityEventType type;
-    private int data;
+    public long runtimeEntityId;
+    public EntityEventType type;
+    public int data;
     /**
      * @since v975
      */
     @Nullable
-    private Vector3f fireAtPosition;
+    public Vector3f fireAtPosition;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

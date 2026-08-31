@@ -13,8 +13,8 @@ import java.util.UUID;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class EmoteListPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private final List<UUID> pieceIds = new ObjectArrayList<>();
+    public long runtimeEntityId;
+    public final List<UUID> pieceIds = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

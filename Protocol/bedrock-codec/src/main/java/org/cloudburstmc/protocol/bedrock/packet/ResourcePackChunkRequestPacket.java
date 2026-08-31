@@ -11,9 +11,9 @@ import java.util.UUID;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ResourcePackChunkRequestPacket implements BedrockPacket {
-    private UUID packId;
-    private String packVersion;
-    private int chunkIndex;
+    public UUID packId;
+    public String packVersion;
+    public int chunkIndex;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

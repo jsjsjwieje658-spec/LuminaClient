@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class SimulationTypePacket implements BedrockPacket {
 
-    private SimulationType type;
+    public SimulationType type;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

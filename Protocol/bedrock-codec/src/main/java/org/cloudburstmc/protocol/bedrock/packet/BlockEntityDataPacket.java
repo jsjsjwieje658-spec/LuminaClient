@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class BlockEntityDataPacket implements BedrockPacket {
-    private Vector3i blockPosition;
-    private NbtMap data;
+    public Vector3i blockPosition;
+    public NbtMap data;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

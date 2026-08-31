@@ -17,31 +17,31 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class ClientboundMapItemDataPacket implements BedrockPacket {
     @Nullable
-    private LongList trackedEntityIds;
+    public LongList trackedEntityIds;
     @Nullable
-    private List<MapTrackedObject> trackedObjects;
+    public List<MapTrackedObject> trackedObjects;
     @Nullable
-    private List<MapDecoration> decorations;
-    private long uniqueMapId;
-    private int dimensionId;
-    private boolean locked;
+    public List<MapDecoration> decorations;
+    public long uniqueMapId;
+    public int dimensionId;
+    public boolean locked;
     /**
      * The world-relative position of the map's origin.
      *
      * @since 1.19.20
      */
-    private Vector3i origin;
+    public Vector3i origin;
     @Nullable
-    private Byte scale;
+    public Byte scale;
     @Nullable
-    private Integer height;
+    public Integer height;
     @Nullable
-    private Integer width;
+    public Integer width;
     @Nullable
-    private Integer xOffset;
+    public Integer xOffset;
     @Nullable
-    private Integer yOffset;
-    private int[] colors;
+    public Integer yOffset;
+    public int[] colors;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

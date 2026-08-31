@@ -8,7 +8,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class SyncEntityPropertyPacket implements BedrockPacket {
-    private NbtMap data;
+    public NbtMap data;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

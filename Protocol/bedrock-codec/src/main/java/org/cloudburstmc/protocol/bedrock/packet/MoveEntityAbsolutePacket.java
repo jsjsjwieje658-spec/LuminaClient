@@ -10,16 +10,16 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class MoveEntityAbsolutePacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private Vector3f position;
-    private Vector3f rotation;
-    private boolean onGround;
-    private boolean teleported;
-    private boolean forceMove;
+    public long runtimeEntityId;
+    public Vector3f position;
+    public Vector3f rotation;
+    public boolean onGround;
+    public boolean teleported;
+    public boolean forceMove;
     /**
      * @since v975
      */
-    private boolean forceCompletion;
+    public boolean forceCompletion;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

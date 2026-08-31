@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetTimePacket implements BedrockPacket {
-    private int time;
+    public int time;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

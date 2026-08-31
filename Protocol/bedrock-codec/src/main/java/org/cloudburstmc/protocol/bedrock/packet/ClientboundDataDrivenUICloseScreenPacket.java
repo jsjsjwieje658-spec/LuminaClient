@@ -22,7 +22,7 @@ public class ClientboundDataDrivenUICloseScreenPacket implements BedrockPacket {
      * @since v944
      */
     @Nullable
-    private Integer formId;
+    public Integer formId;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

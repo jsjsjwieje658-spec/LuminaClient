@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetMovementAuthorityPacket implements BedrockPacket {
-    private AuthoritativeMovementMode movementMode;
+    public AuthoritativeMovementMode movementMode;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

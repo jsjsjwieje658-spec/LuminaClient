@@ -18,9 +18,9 @@ import java.util.Map;
 @ToString(doNotUseGetters = true)
 public class SendPartyDestinationCookiePacket implements BedrockPacket {
 
-    private String cookie;
-    private Intent intent;
-    private String destinationName;
+    public String cookie;
+    public Intent intent;
+    public String destinationName;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -51,7 +51,7 @@ public class SendPartyDestinationCookiePacket implements BedrockPacket {
             }
         }
 
-        private final String serializeName;
+    public final String serializeName;
 
         Intent(String serializeName) {
             this.serializeName = serializeName;

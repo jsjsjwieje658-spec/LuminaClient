@@ -15,8 +15,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class PartyDestinationCookieResponsePacket implements BedrockPacket {
 
-    private String cookie;
-    private boolean accepted;
+    public String cookie;
+    public boolean accepted;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

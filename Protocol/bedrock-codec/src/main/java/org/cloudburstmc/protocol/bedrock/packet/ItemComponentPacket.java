@@ -18,7 +18,7 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class ItemComponentPacket implements BedrockPacket {
 
-    private final List<ItemDefinition> items = new ObjectArrayList<>();
+    public final List<ItemDefinition> items = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

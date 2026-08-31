@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class EduUriResourcePacket implements BedrockPacket {
-    private EduSharedUriResource eduSharedUriResource;
+    public EduSharedUriResource eduSharedUriResource;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

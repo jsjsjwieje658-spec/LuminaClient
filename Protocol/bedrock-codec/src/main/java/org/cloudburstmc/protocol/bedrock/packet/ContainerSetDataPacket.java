@@ -20,9 +20,9 @@ public class ContainerSetDataPacket implements BedrockPacket {
     public static final int BREWING_STAND_FUEL_AMOUNT = 1;
     public static final int BREWING_STAND_FUEL_TOTAL = 2;
 
-    private byte windowId;
-    private int property;
-    private int value;
+    public byte windowId;
+    public int property;
+    public int value;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -13,16 +13,16 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class CodeBuilderSourcePacket implements BedrockPacket {
 
-    private CodeBuilderOperationType operation;
-    private CodeBuilderCategoryType category;
+    public CodeBuilderOperationType operation;
+    public CodeBuilderCategoryType category;
     /**
      * @deprecated since v685
      */
-    private String value;
+    public String value;
     /**
      * @since v685
      */
-    private CodeBuilderCodeStatus codeStatus;
+    public CodeBuilderCodeStatus codeStatus;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

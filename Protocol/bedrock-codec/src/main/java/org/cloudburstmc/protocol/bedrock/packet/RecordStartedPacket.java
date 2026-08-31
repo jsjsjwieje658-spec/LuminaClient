@@ -16,8 +16,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class RecordStartedPacket implements BedrockPacket {
 
-    private Vector3i blockPos;
-    private long serverSoundHandle;
+    public Vector3i blockPos;
+    public long serverSoundHandle;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

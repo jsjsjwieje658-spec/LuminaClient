@@ -18,7 +18,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class ServerStoreInfoPacket implements BedrockPacket {
 
     @Nullable
-    private ClientStoreEntrypointConfiguration store;
+    public ClientStoreEntrypointConfiguration store;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

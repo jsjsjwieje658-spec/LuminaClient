@@ -11,9 +11,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class LevelEventPacket implements BedrockPacket {
-    private LevelEventType type;
-    private Vector3f position;
-    private int data;
+    public LevelEventType type;
+    public Vector3f position;
+    public int data;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

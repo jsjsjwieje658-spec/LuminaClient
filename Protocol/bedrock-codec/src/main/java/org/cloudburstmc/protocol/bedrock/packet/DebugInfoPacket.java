@@ -9,8 +9,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class DebugInfoPacket implements BedrockPacket {
-    private long uniqueEntityId;
-    private String data;
+    public long uniqueEntityId;
+    public String data;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
