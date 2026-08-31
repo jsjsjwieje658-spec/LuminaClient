@@ -26,7 +26,6 @@ class GameDataManager {
         val isHost: Boolean,
         val hasTrustedSkin: Boolean,
         val isSubClient: Boolean,
-        val color: Int,
         val addedTime: Long = System.currentTimeMillis()
     )
 
@@ -47,7 +46,6 @@ class GameDataManager {
                         isHost = entry.isHost,
                         hasTrustedSkin = entry.isTrustedSkin,
                         isSubClient = entry.isSubClient,
-                        color = entry.color.rgb,
                     )
 
                     currentPlayerList[entry.uuid] = playerInfo
