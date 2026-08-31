@@ -5,10 +5,7 @@ import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NbtType;
-import org.cloudburstmc.protocol.bedrock.data.EncodingSettings;
-import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
-import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
-import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
@@ -23,6 +20,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescripto
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
@@ -123,6 +121,10 @@ public interface BedrockCodecHelper {
 
     void writeItem(ByteBuf buffer, ItemData item);
 
+    ItemData readNetworkItemStackDescriptor(ByteBuf buffer);
+
+    void writeNetworkItemStackDescriptor(ByteBuf buffer, ItemData item);
+
     ItemData readItemInstance(ByteBuf buffer);
 
     void writeItemInstance(ByteBuf buffer, ItemData item);
@@ -213,8 +215,10 @@ public interface BedrockCodecHelper {
 
     void writeTagValue(ByteBuf buffer, Object tag);
 
+    @Deprecated
     void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet);
 
+    @Deprecated
     void writeItemUse(ByteBuf buffer, InventoryTransactionPacket packet);
 
     boolean readInventoryActions(ByteBuf buffer, List<InventoryActionData> actions);
@@ -222,6 +226,10 @@ public interface BedrockCodecHelper {
     void writeInventoryActions(ByteBuf buffer, List<InventoryActionData> actions, boolean hasNetworkIds);
 
     void readExperiments(ByteBuf buffer, List<ExperimentData> experiments);
+
+    InventorySource readSource(ByteBuf buffer);
+
+    void writeSource(ByteBuf buffer, InventorySource inventorySource);
 
     void writeExperiments(ByteBuf buffer, List<ExperimentData> experiments);
 
@@ -268,4 +276,12 @@ public interface BedrockCodecHelper {
     <T extends Enum<?>> void writeLargeVarIntFlags(ByteBuf buffer, Set<T> flags, Class<T> clazz);
 
     <T extends Enum<?>> void readLargeVarIntFlags(ByteBuf buffer, Set<T> flags, Class<T> clazz);
+
+    void writePresenceConfiguration(ByteBuf buffer, PresenceConfiguration configuration);
+
+    PresenceConfiguration readPresenceConfiguration(ByteBuf buffer);
+
+    void writeGatheringsConfiguration(ByteBuf byteBuf, BedrockCodecHelper bedrockCodecHelper, GatheringsConfigurationJoinInfo gatheringsConfigurationJoinInfo);
+
+    GatheringsConfigurationJoinInfo readGatheringsConfiguration(ByteBuf byteBuf, BedrockCodecHelper bedrockCodecHelper);
 }
