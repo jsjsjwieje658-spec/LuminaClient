@@ -129,7 +129,7 @@ class PlayerTracerElement : Element(
                     name = entry.name.toString(),
                     xuid = entry.xuid,
                     platformChatId = entry.platformChatId,
-                    buildPlatform = entry.buildPlatform,
+                    buildPlatform = entry.buildPlatform.id,
                     skin = entry.skin
                 )
             }

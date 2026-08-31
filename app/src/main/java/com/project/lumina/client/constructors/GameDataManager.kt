@@ -42,12 +42,12 @@ class GameDataManager {
                         name = entry.name.toString(),
                         xuid = entry.xuid,
                         platformChatId = entry.platformChatId,
-                        buildPlatform = entry.buildPlatform,
+                        buildPlatform = entry.buildPlatform.id,
                         isTeacher = entry.isTeacher,
                         isHost = entry.isHost,
                         hasTrustedSkin = entry.isTrustedSkin,
                         isSubClient = entry.isSubClient,
-                        color = entry.color
+                        color = entry.color.rgb,
                     )
 
                     currentPlayerList[entry.uuid] = playerInfo
