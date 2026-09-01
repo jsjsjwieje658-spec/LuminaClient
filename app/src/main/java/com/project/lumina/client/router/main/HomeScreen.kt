@@ -161,22 +161,19 @@ fun HomeScreen(
         }
     }
 
-    // Notification colors - computed directly in composable context
-    val notificationContainerColor = remember(state.customNotificationType) {
-        when (state.customNotificationType) {
-            NotificationType.SUCCESS -> MaterialTheme.colorScheme.primaryContainer
-            NotificationType.ERROR -> MaterialTheme.colorScheme.errorContainer
-            NotificationType.INFO -> MaterialTheme.colorScheme.surfaceContainerHigh
-            NotificationType.WARNING -> MaterialTheme.colorScheme.tertiaryContainer
-        }
+    // Notification colors - capture MaterialTheme colors in composable context first
+    val colorScheme = MaterialTheme.colorScheme
+    val notificationContainerColor = when (state.customNotificationType) {
+        NotificationType.SUCCESS -> colorScheme.primaryContainer
+        NotificationType.ERROR -> colorScheme.errorContainer
+        NotificationType.INFO -> colorScheme.surfaceContainerHigh
+        NotificationType.WARNING -> colorScheme.tertiaryContainer
     }
-    val notificationContentColor = remember(state.customNotificationType) {
-        when (state.customNotificationType) {
-            NotificationType.SUCCESS -> MaterialTheme.colorScheme.onPrimaryContainer
-            NotificationType.ERROR -> MaterialTheme.colorScheme.onErrorContainer
-            NotificationType.INFO -> MaterialTheme.colorScheme.onSurface
-            NotificationType.WARNING -> MaterialTheme.colorScheme.onTertiaryContainer
-        }
+    val notificationContentColor = when (state.customNotificationType) {
+        NotificationType.SUCCESS -> colorScheme.onPrimaryContainer
+        NotificationType.ERROR -> colorScheme.onErrorContainer
+        NotificationType.INFO -> colorScheme.onSurface
+        NotificationType.WARNING -> colorScheme.onTertiaryContainer
     }
 
     // Derived: is account logged in
