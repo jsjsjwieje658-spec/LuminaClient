@@ -25,7 +25,7 @@ android {
 
         ndk {
             //noinspection ChromeOsAbiSupport
-            abiFilters += setOf("arm64-v8a")
+            abiFilters += setOf("arm64-v8a", "armeabi-v7a", "x86_64", "x86")
         }
         externalNativeBuild {
             cmake {
@@ -62,13 +62,8 @@ android {
     }
     buildTypes {
         debug {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             isDebuggable = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
             signingConfig = signingConfigs.getByName("shared")
         }
         release {
