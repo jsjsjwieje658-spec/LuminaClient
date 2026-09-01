@@ -58,7 +58,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -162,25 +161,21 @@ fun HomeScreen(
         }
     }
 
-    // Derived: notification color
-    val notificationContainerColor by remember(state.customNotificationType) {
-        derivedStateOf {
-            when (state.customNotificationType) {
-                NotificationType.SUCCESS -> MaterialTheme.colorScheme.primaryContainer
-                NotificationType.ERROR -> MaterialTheme.colorScheme.errorContainer
-                NotificationType.INFO -> MaterialTheme.colorScheme.surfaceContainerHigh
-                NotificationType.WARNING -> MaterialTheme.colorScheme.tertiaryContainer
-            }
+    // Notification colors - computed directly in composable context
+    val notificationContainerColor = remember(state.customNotificationType) {
+        when (state.customNotificationType) {
+            NotificationType.SUCCESS -> MaterialTheme.colorScheme.primaryContainer
+            NotificationType.ERROR -> MaterialTheme.colorScheme.errorContainer
+            NotificationType.INFO -> MaterialTheme.colorScheme.surfaceContainerHigh
+            NotificationType.WARNING -> MaterialTheme.colorScheme.tertiaryContainer
         }
     }
-    val notificationContentColor by remember(state.customNotificationType) {
-        derivedStateOf {
-            when (state.customNotificationType) {
-                NotificationType.SUCCESS -> MaterialTheme.colorScheme.onPrimaryContainer
-                NotificationType.ERROR -> MaterialTheme.colorScheme.onErrorContainer
-                NotificationType.INFO -> MaterialTheme.colorScheme.onSurface
-                NotificationType.WARNING -> MaterialTheme.colorScheme.onTertiaryContainer
-            }
+    val notificationContentColor = remember(state.customNotificationType) {
+        when (state.customNotificationType) {
+            NotificationType.SUCCESS -> MaterialTheme.colorScheme.onPrimaryContainer
+            NotificationType.ERROR -> MaterialTheme.colorScheme.onErrorContainer
+            NotificationType.INFO -> MaterialTheme.colorScheme.onSurface
+            NotificationType.WARNING -> MaterialTheme.colorScheme.onTertiaryContainer
         }
     }
 
