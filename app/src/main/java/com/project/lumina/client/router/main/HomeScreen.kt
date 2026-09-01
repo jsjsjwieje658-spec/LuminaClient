@@ -81,7 +81,7 @@ import com.project.lumina.client.overlay.mods.NotificationType
 import com.project.lumina.client.overlay.mods.SimpleOverlayNotification
 import com.project.lumina.client.service.Services
 import com.project.lumina.client.ui.component.AddServerDialog
-import com.project.lumina.client.ui.component.RealmSelector
+import com.project.lumina.client.ui.component.RealmsSelector
 import com.project.lumina.client.ui.component.ServerSelector
 import com.project.lumina.client.ui.component.SubServerInfo
 import com.project.lumina.client.model.CaptureModeModel
