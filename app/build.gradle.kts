@@ -25,7 +25,7 @@ android {
 
         ndk {
             //noinspection ChromeOsAbiSupport
-            abiFilters += setOf("arm64-v8a", "armeabi-v7a", "x86_64", "x86")
+            abiFilters += setOf("arm64-v8a")
         }
         externalNativeBuild {
             cmake {
@@ -62,8 +62,13 @@ android {
     }
     buildTypes {
         debug {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             isDebuggable = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.getByName("shared")
         }
         release {
@@ -136,7 +141,6 @@ dependencies {
     implementation("com.amplitude:analytics-android:1.+")
     implementation("com.github.SmartToolFactory:Compose-Colorful-Sliders:1.2.2")
     implementation("io.coil-kt:coil-compose:2.4.0")
-    implementation("com.airbnb.android:lottie-compose:6.0.0")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
     implementation(project(":animatedux"))
     implementation(project(":Pixie"))
@@ -159,7 +163,6 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material.icons.extended)
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
