@@ -12,11 +12,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.widget.Toast
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,8 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
@@ -796,68 +789,31 @@ fun ServerConfigDialog(
     onDismiss: () -> Unit,
     onSave: (String, String) -> Unit
 ) {
-    var isVisible by remember { mutableStateOf(false) }
     var ip by remember { mutableStateOf(initialIp) }
     var port by remember { mutableStateOf(initialPort) }
     val coroutineScope = rememberCoroutineScope()
 
-    
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val screenHeight = configuration.screenHeightDp.dp
     val isCompactScreen = screenWidth < 600.dp
 
-    
-    val scale by animateFloatAsState(
-        targetValue = if (isVisible) 1f else 0.85f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
-        ),
-        label = "dialogScale"
-    )
-
-    val alpha by animateFloatAsState(
-        targetValue = if (isVisible) 1f else 0f,
-        animationSpec = tween(400, easing = FastOutSlowInEasing),
-        label = "dialogAlpha"
-    )
-
-    val offsetY by animateFloatAsState(
-        targetValue = if (isVisible) 0f else 50f,
-        animationSpec = tween(500, easing = FastOutSlowInEasing),
-        label = "dialogOffsetY"
-    )
-
-    LaunchedEffect(Unit) {
-        isVisible = true
-    }
-
-    
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black.copy(alpha = (0.4f * alpha.coerceIn(0f, 1f))))
+            .background(Color.Black.copy(alpha = 0.4f))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
             ) {
-                coroutineScope.launch {
-                    isVisible = false
-                    delay(300)
-                    onDismiss()
-                }
+                onDismiss()
             },
         contentAlignment = Alignment.Center
     ) {
-        
         Card(
             modifier = Modifier
                 .widthIn(min = 280.dp, max = min(screenWidth * 0.9f, 400.dp))
                 .heightIn(max = screenHeight * 0.8f)
-                .scale(scale)
-                .alpha(alpha)
-                .offset(y = offsetY.dp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
@@ -923,11 +879,7 @@ fun ServerConfigDialog(
                     ) {
                         OutlinedButton(
                             onClick = {
-                                coroutineScope.launch {
-                                    isVisible = false
-                                    delay(300)
-                                    onDismiss()
-                                }
+                                onDismiss()
                             },
                             colors = ButtonDefaults.outlinedButtonColors(
                                 contentColor = MaterialTheme.colorScheme.error
@@ -948,11 +900,7 @@ fun ServerConfigDialog(
 
                         Button(
                             onClick = {
-                                coroutineScope.launch {
-                                    isVisible = false
-                                    delay(300)
-                                    onSave(ip, port)
-                                }
+                                onSave(ip, port)
                             },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.primary
@@ -1091,17 +1039,6 @@ fun DropdownMenu(
     onOptionSelected: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val rotationState by animateFloatAsState(
-        targetValue = if (expanded) 180f else 0f,
-        animationSpec = tween(300, easing = FastOutSlowInEasing),
-        label = "rotation"
-    )
-    
-    
-    val elevationState by animateFloatAsState(
-        targetValue = if (expanded) 8f else 2f,
-        label = "elevation"
-    )
 
     Column(modifier = modifier) {
         Text(
@@ -1124,7 +1061,7 @@ fun DropdownMenu(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 ),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                elevation = CardDefaults.cardElevation(defaultElevation = elevationState.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Row(
@@ -1165,9 +1102,7 @@ fun DropdownMenu(
                         imageVector = Icons.Default.KeyboardArrowDown,
                         contentDescription = if (expanded) "Collapse" else "Expand",
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier
-                            .rotate(rotationState)
-                            .size(20.dp)
+                        modifier = Modifier.size(20.dp)
                     )
                 }
             }
@@ -1258,34 +1193,7 @@ fun AppSelectionDialog(
     getAppVersion: (String) -> String,
     getAppIcon: (String) -> Drawable?
 ) {
-    var isVisible by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
-
-    val scale by animateFloatAsState(
-        targetValue = if (isVisible) 1f else 0.85f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
-        ),
-        label = "dialogScale"
-    )
-
-    val alpha by animateFloatAsState(
-        targetValue = if (isVisible) 1f else 0f,
-        animationSpec = tween(400, easing = FastOutSlowInEasing),
-        label = "dialogAlpha"
-    )
-
-    val offsetY by animateFloatAsState(
-        targetValue = if (isVisible) 0f else 50f,
-        animationSpec = tween(500, easing = FastOutSlowInEasing),
-        label = "dialogOffsetY"
-    )
-
-    LaunchedEffect(Unit) {
-        isVisible = true
-    }
-
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val screenHeight = configuration.screenHeightDp.dp
@@ -1293,16 +1201,12 @@ fun AppSelectionDialog(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black.copy(alpha = (0.4f * alpha.coerceIn(0f, 1f))))
+            .background(Color.Black.copy(alpha = 0.4f))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
             ) {
-                coroutineScope.launch {
-                    isVisible = false
-                    delay(300)
-                    onDismiss()
-                }
+                onDismiss()
             },
         contentAlignment = Alignment.Center
     ) {
@@ -1310,9 +1214,6 @@ fun AppSelectionDialog(
             modifier = Modifier
                 .widthIn(min = 320.dp, max = min(screenWidth * 0.9f, 500.dp))
                 .heightIn(max = screenHeight * 0.8f)
-                .scale(scale)
-                .alpha(alpha)
-                .offset(y = offsetY.dp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
@@ -1359,11 +1260,7 @@ fun AppSelectionDialog(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    coroutineScope.launch {
-                                        isVisible = false
-                                        delay(300)
-                                        onAppSelected(packageName)
-                                    }
+                                    onAppSelected(packageName)
                                 },
                             colors = CardDefaults.cardColors(
                                 containerColor = if (isSelected)
@@ -1443,11 +1340,7 @@ fun AppSelectionDialog(
                 ) {
                     OutlinedButton(
                         onClick = {
-                            coroutineScope.launch {
-                                isVisible = false
-                                delay(300)
-                                onDismiss()
-                            }
+                            onDismiss()
                         },
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = MaterialTheme.colorScheme.error

@@ -2,9 +2,8 @@ package com.project.lumina.client.overlay.entityradar
 
 import android.graphics.BitmapFactory
 import android.os.Build
+import android.util.Log
 import android.view.WindowManager
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,14 +21,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -40,7 +36,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import android.util.Log
 import com.project.lumina.client.R
 import com.project.lumina.client.constructors.EntityStorage
 import com.project.lumina.client.constructors.MobAlertManager
@@ -49,8 +44,6 @@ import com.project.lumina.client.constructors.NetBound
 import com.project.lumina.client.overlay.manager.OverlayManager
 import com.project.lumina.client.overlay.manager.OverlayWindow
 import com.project.lumina.client.ui.theme.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlin.math.atan2
 import kotlin.math.ceil
 import kotlin.math.sqrt
@@ -106,36 +99,14 @@ class EntityRadarOverlay(
         val entities: List<EntityStorage.EntityInfo>
     )
 
+    // ── Main content ──────────────────────────────────────────────
+
     @Composable
     override fun Content() {
-        var shouldAnimate by remember { mutableStateOf(false) }
-        val scope = rememberCoroutineScope()
-
-        LaunchedEffect(Unit) {
-            delay(50)
-            shouldAnimate = true
-        }
-
-        val translateY by animateFloatAsState(
-            targetValue = if (shouldAnimate) 0f else 100f,
-            animationSpec = tween(400, easing = FastOutSlowInEasing),
-            label = "slideAnimation"
-        )
-
-        val alpha by animateFloatAsState(
-            targetValue = if (shouldAnimate) 1f else 0f,
-            animationSpec = tween(350, easing = LinearOutSlowInEasing),
-            label = "fadeAnimation"
-        )
-
-        val dismissWithAnimation = remember {
+        val dismissOverlay = remember {
             {
-                shouldAnimate = false
-                scope.launch {
-                    delay(200)
-                    OverlayManager.dismissOverlayWindow(this@EntityRadarOverlay)
-                    onDismiss?.invoke()
-                }
+                OverlayManager.dismissOverlayWindow(this@EntityRadarOverlay)
+                onDismiss?.invoke()
                 Unit
             }
         }
@@ -150,8 +121,8 @@ class EntityRadarOverlay(
                         count = entitiesList.size,
                         imagePath = entitiesList.firstOrNull()?.imagePath,
                         entities = entitiesList.sortedBy {
-                            val coords = it.coords
-                            sqrt((coords.x * coords.x + coords.y * coords.y + coords.z * coords.z).toDouble())
+                            val c = it.coords
+                            sqrt((c.x * c.x + c.y * c.y + c.z * c.z).toDouble())
                         }
                     )
                 }
@@ -172,7 +143,7 @@ class EntityRadarOverlay(
                     indication = null
                 ) {
                     if (selectedEntityName == null && selectedEntityId == null) {
-                        dismissWithAnimation()
+                        dismissOverlay()
                     }
                 },
             contentAlignment = Alignment.Center
@@ -183,10 +154,6 @@ class EntityRadarOverlay(
                 modifier = Modifier
                     .fillMaxWidth(0.92f)
                     .fillMaxHeight(0.88f)
-                    .graphicsLayer {
-                        translationY = translateY
-                        this.alpha = alpha
-                    }
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null
@@ -210,7 +177,7 @@ class EntityRadarOverlay(
                                 entities.size,
                                 entityGroups.size,
                                 onSearch = { searchQuery = it },
-                                onClose = dismissWithAnimation
+                                onClose = dismissOverlay
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             EmptyState()
@@ -238,7 +205,7 @@ class EntityRadarOverlay(
                                 entities.size,
                                 entityGroups.size,
                                 onSearch = { searchQuery = it },
-                                onClose = dismissWithAnimation
+                                onClose = dismissOverlay
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             HorizontalDivider(color = KitsuOnSurfaceVariant.copy(alpha = 0.2f))
@@ -250,6 +217,8 @@ class EntityRadarOverlay(
             }
         }
     }
+
+    // ── Header with search ────────────────────────────────────────
 
     @Composable
     private fun CompactHeader(
@@ -356,6 +325,8 @@ class EntityRadarOverlay(
         SearchBar(onSearch)
     }
 
+    // ── Search bar ────────────────────────────────────────────────
+
     @Composable
     private fun SearchBar(onSearch: (String) -> Unit) {
         var query by remember { mutableStateOf("") }
@@ -413,6 +384,8 @@ class EntityRadarOverlay(
         }
     }
 
+    // ── Simple back button ────────────────────────────────────────
+
     @Composable
     private fun SimpleBackButton(onBack: () -> Unit) {
         Row(
@@ -445,6 +418,8 @@ class EntityRadarOverlay(
         }
     }
 
+    // ── Entity grid (no animations) ──────────────────────────────
+
     @Composable
     private fun EntityGrid(
         entityGroups: List<EntityGroup>,
@@ -457,52 +432,27 @@ class EntityRadarOverlay(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier.fillMaxSize()
         ) {
-            items(entityGroups) { group ->
+            items(entityGroups, key = { it.name }) { group ->
                 EntityCard(group, onClick = { onEntityClick(group.name) })
             }
         }
     }
 
+    // ── Entity card — NO animations ──────────────────────────────
+
     @Composable
     private fun EntityCard(group: EntityGroup, onClick: () -> Unit) {
-        var isPressed by remember { mutableStateOf(false) }
-        var isVisible by remember { mutableStateOf(false) }
-
-        LaunchedEffect(Unit) {
-            delay(50)
-            isVisible = true
-        }
-
-        val scale by animateFloatAsState(
-            targetValue = if (isPressed) 0.95f else if (isVisible) 1f else 0.8f,
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioMediumBouncy,
-                stiffness = Spring.StiffnessLow
-            ),
-            label = "cardScale"
-        )
-
-        val alpha by animateFloatAsState(
-            targetValue = if (isVisible) 1f else 0f,
-            animationSpec = tween(300, easing = FastOutSlowInEasing),
-            label = "cardAlpha"
-        )
-
         Card(
             shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(containerColor = KitsuSurfaceVariant),
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .scale(scale)
-                .alpha(alpha)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    isPressed = true
-                    onClick()
-                },
+                    indication = null,
+                    onClick = onClick
+                ),
             elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
         ) {
             Column(
@@ -510,6 +460,7 @@ class EntityRadarOverlay(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+                // Icon container (no pulse animation)
                 Box(
                     modifier = Modifier
                         .size(44.dp)
@@ -517,28 +468,16 @@ class EntityRadarOverlay(
                         .background(KitsuSurface),
                     contentAlignment = Alignment.Center
                 ) {
-                    val infiniteTransition = rememberInfiniteTransition(label = "iconPulse")
-                    val pulseScale by infiniteTransition.animateFloat(
-                        initialValue = 1f,
-                        targetValue = 1.05f,
-                        animationSpec = infiniteRepeatable(
-                            animation = tween(1000, easing = FastOutSlowInEasing),
-                            repeatMode = RepeatMode.Reverse
-                        ),
-                        label = "pulseScale"
-                    )
-
-                    Box(modifier = Modifier.scale(pulseScale)) {
-                        if (group.imagePath != null) {
-                            EntityImage(group.imagePath, group.name, 36.dp)
-                        } else {
-                            PlaceholderIcon(20.dp)
-                        }
+                    if (group.imagePath != null) {
+                        EntityImage(group.imagePath, group.name, 36.dp)
+                    } else {
+                        PlaceholderIcon(20.dp)
                     }
                 }
 
                 Spacer(modifier = Modifier.height(6.dp))
 
+                // Name + alert/star badges
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
@@ -559,21 +498,10 @@ class EntityRadarOverlay(
                     )
 
                     if (MobAlertManager.hasAlert(group.name)) {
-                        val infiniteTransition = rememberInfiniteTransition(label = "alertPulse")
-                        val alertAlpha by infiniteTransition.animateFloat(
-                            initialValue = 0.6f,
-                            targetValue = 1f,
-                            animationSpec = infiniteRepeatable(
-                                animation = tween(800, easing = FastOutSlowInEasing),
-                                repeatMode = RepeatMode.Reverse
-                            ),
-                            label = "alertAlpha"
-                        )
-
                         Icon(
                             painter = painterResource(id = R.drawable.moon_stars_24),
                             contentDescription = "Alert Active",
-                            tint = Color(0xFFFFB800).copy(alpha = alertAlpha),
+                            tint = Color(0xFFFFB800),
                             modifier = Modifier.size(12.dp)
                         )
                     }
@@ -591,6 +519,7 @@ class EntityRadarOverlay(
 
                 Spacer(modifier = Modifier.height(3.dp))
 
+                // Count badge
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
@@ -598,7 +527,7 @@ class EntityRadarOverlay(
                         .padding(horizontal = 6.dp, vertical = 3.dp)
                 ) {
                     Text(
-                        text = "×${group.count}",
+                        text = "\u00D7${group.count}",
                         style = TextStyle(
                             fontSize = 10.sp,
                             fontFamily = modernFont,
@@ -609,14 +538,9 @@ class EntityRadarOverlay(
                 }
             }
         }
-
-        LaunchedEffect(isPressed) {
-            if (isPressed) {
-                delay(100)
-                isPressed = false
-            }
-        }
     }
+
+    // ── Entity detail view (group list) — NO animations ──────────
 
     @Composable
     private fun EntityDetailView(
@@ -626,21 +550,11 @@ class EntityRadarOverlay(
         Column(modifier = Modifier.fillMaxSize()) {
             var hasAlert by remember { mutableStateOf(MobAlertManager.hasAlert(entityGroup.name)) }
 
-            val infiniteTransition = rememberInfiniteTransition(label = "alertCardPulse")
-            val cardAlpha by infiniteTransition.animateFloat(
-                initialValue = 0.1f,
-                targetValue = 0.2f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(1500, easing = FastOutSlowInEasing),
-                    repeatMode = RepeatMode.Reverse
-                ),
-                label = "cardAlpha"
-            )
-
+            // Static card background — no pulsing
             Card(
                 shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = if (hasAlert) Color(0xFFFFB800).copy(alpha = cardAlpha) else KitsuSurfaceVariant
+                    containerColor = if (hasAlert) Color(0xFFFFB800).copy(alpha = 0.15f) else KitsuSurfaceVariant
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -717,49 +631,23 @@ class EntityRadarOverlay(
                 contentPadding = PaddingValues(vertical = 6.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(entityGroup.entities) { entity ->
+                items(entityGroup.entities, key = { it.id }) { entity ->
                     EntityListItemCard(entity) { onEntityClick(entity.id) }
                 }
             }
         }
     }
 
+    // ── Entity list item — NO animations ─────────────────────────
+
     @Composable
     private fun EntityListItemCard(entity: EntityStorage.EntityInfo, onClick: () -> Unit) {
-        var isVisible by remember { mutableStateOf(false) }
-        var isPressed by remember { mutableStateOf(false) }
-
-        LaunchedEffect(Unit) {
-            delay(30)
-            isVisible = true
-        }
-
-        val scale by animateFloatAsState(
-            targetValue = if (isPressed) 0.98f else if (isVisible) 1f else 0.95f,
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioMediumBouncy,
-                stiffness = Spring.StiffnessMedium
-            ),
-            label = "listItemScale"
-        )
-
-        val alpha by animateFloatAsState(
-            targetValue = if (isVisible) 1f else 0f,
-            animationSpec = tween(250, easing = FastOutSlowInEasing),
-            label = "listItemAlpha"
-        )
-
         Card(
             shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(containerColor = KitsuSurfaceVariant),
             modifier = Modifier
                 .fillMaxWidth()
-                .scale(scale)
-                .alpha(alpha)
-                .clickable {
-                    isPressed = true
-                    onClick()
-                },
+                .clickable(onClick = onClick),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
         ) {
             Row(
@@ -768,7 +656,6 @@ class EntityRadarOverlay(
                     .padding(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                
                 Box(
                     modifier = Modifier
                         .size(48.dp)
@@ -785,7 +672,6 @@ class EntityRadarOverlay(
 
                 Spacer(modifier = Modifier.width(12.dp))
 
-                
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = entity.name,
@@ -809,7 +695,6 @@ class EntityRadarOverlay(
                     )
                 }
 
-                
                 if (entity.direction != "IDLE") {
                     Box(
                         modifier = Modifier
@@ -832,14 +717,14 @@ class EntityRadarOverlay(
         }
     }
 
+    // ── Individual entity view (detail) ──────────────────────────
+
     @Composable
     private fun IndividualEntityView(entity: EntityStorage.EntityInfo, onBack: () -> Unit) {
         Column(modifier = Modifier.fillMaxSize()) {
             SimpleBackButton(onBack)
-
             Spacer(modifier = Modifier.height(12.dp))
 
-            
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -847,13 +732,12 @@ class EntityRadarOverlay(
                 contentPadding = PaddingValues(bottom = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                // Entity header (image + name + id)
                 item {
-                    
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.Top
                     ) {
-                        
                         Box(
                             modifier = Modifier
                                 .size(72.dp)
@@ -879,7 +763,6 @@ class EntityRadarOverlay(
 
                         Spacer(modifier = Modifier.width(14.dp))
 
-                        
                         Column(
                             modifier = Modifier.weight(1f),
                             verticalArrangement = Arrangement.spacedBy(6.dp)
@@ -895,7 +778,6 @@ class EntityRadarOverlay(
                                 maxLines = 2,
                                 overflow = TextOverflow.Ellipsis
                             )
-
                             Text(
                                 text = "ID: #${entity.id}",
                                 style = TextStyle(
@@ -909,166 +791,141 @@ class EntityRadarOverlay(
                     }
                 }
 
+                // Divider
                 item {
                     HorizontalDivider(color = KitsuOnSurfaceVariant.copy(alpha = 0.2f))
                 }
 
+                // Info card
                 item {
-                    
-                    Card(
-                        shape = RoundedCornerShape(12.dp),
-                        colors = CardDefaults.cardColors(containerColor = KitsuSurfaceVariant),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            val playerPos = session.localPlayer.vec3Position
-                            val dx = entity.coords.x - playerPos.x
-                            val dy = entity.coords.y - playerPos.y
-                            val dz = entity.coords.z - playerPos.z
-
-                            val distance = sqrt(dx * dx + dy * dy + dz * dz)
-                            val direction = getCardinalDirection(dx, dz)
-
-                            val speed = if (entity.direction != "IDLE") "Moving" else "Stationary"
-
-                            val timeTracked = (System.currentTimeMillis() - entity.firstSeen) / 1000
-                            val timeText = when {
-                                timeTracked < 60 -> "${timeTracked}s"
-                                timeTracked < 3600 -> "${timeTracked / 60}m ${timeTracked % 60}s"
-                                else -> "${timeTracked / 3600}h ${(timeTracked % 3600) / 60}m"
-                            }
-
-                            val velocityText = if (entity.velocity < 0.1f) "Stationary" else String.format("%.2f m/s", entity.velocity)
-
-                            InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_compass, "Direction", direction)
-                            InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_directions, "Heading", if (entity.direction == "IDLE") "Standing Still" else entity.direction)
-                            InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_body_scan, "Status", speed)
-                            InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_location, "Distance", String.format("%.1f blocks", distance))
-                            InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_map_pin, "Location", "(${ceil(entity.coords.x).toInt()}, ${ceil(entity.coords.y).toInt()}, ${ceil(entity.coords.z).toInt()})")
-                            InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_line_height, "Height", entity.relativeHeight)
-                            InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_clock, "Tracked", timeText)
-                            InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_gauge, "Velocity", velocityText)
-                            if (entity.minDistance < Float.MAX_VALUE) {
-                                InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_arrows_minimize, "Min Distance", String.format("%.1f blocks", entity.minDistance))
-                            }
-                            if (entity.maxDistance > 0f) {
-                                InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_arrows_maximize, "Max Distance", String.format("%.1f blocks", entity.maxDistance))
-                            }
-                        }
-                    }
+                    InfoCard(entity)
                 }
             }
 
-            var isSelected by remember { mutableStateOf(SelectedMobsManager.isSelected(entity.id)) }
+            // Action buttons
+            ActionButtons(entity)
+        }
+    }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+    @Composable
+    private fun InfoCard(entity: EntityStorage.EntityInfo) {
+        Card(
+            shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(containerColor = KitsuSurfaceVariant),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Button(
-                    onClick = {
-                        if (isSelected) {
-                            SelectedMobsManager.unselectMob(entity.id)
-                            isSelected = false
-                        } else {
-                            SelectedMobsManager.selectMob(entity)
-                            isSelected = true
-                        }
-                    },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(52.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isSelected) Color(0xFFFFB800) else KitsuSurfaceVariant,
-                        contentColor = if (isSelected) Color.Black else KitsuOnSurface
-                    )
-                ) {
-                    Icon(
-                        painter = painterResource(id = if (isSelected) ir.alirezaivaz.tablericons.R.drawable.ic_star_filled else ir.alirezaivaz.tablericons.R.drawable.ic_star),
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = if (isSelected) "Selected" else "Select",
-                        style = TextStyle(
-                            fontSize = 13.sp,
-                            fontFamily = modernFont,
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
+                val playerPos = session.localPlayer.vec3Position
+                val dx = entity.coords.x - playerPos.x
+                val dy = entity.coords.y - playerPos.y
+                val dz = entity.coords.z - playerPos.z
+
+                val distance = sqrt(dx * dx + dy * dy + dz * dz)
+                val direction = getCardinalDirection(dx, dz)
+                val speed = if (entity.direction != "IDLE") "Moving" else "Stationary"
+
+                val timeTracked = (System.currentTimeMillis() - entity.firstSeen) / 1000
+                val timeText = when {
+                    timeTracked < 60 -> "${timeTracked}s"
+                    timeTracked < 3600 -> "${timeTracked / 60}m ${timeTracked % 60}s"
+                    else -> "${timeTracked / 3600}h ${(timeTracked % 3600) / 60}m"
                 }
 
-                Button(
-                    onClick = {
-                        if (isFollowing) {
-                            onStopFollowing()
-                            isFollowing = false
-                        } else {
-                            onFollowEntity(entity)
-                            isFollowing = true
-                        }
-                    },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(52.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isFollowing) Color(0xFFE81123) else KitsuPrimary,
-                        contentColor = Color.White
-                    )
-                ) {
-                    Icon(
-                        painter = painterResource(id = if (isFollowing) R.drawable.cross_circle_24 else R.drawable.moon_stars_24),
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = if (isFollowing) "Stop" else "Follow",
-                        style = TextStyle(
-                            fontSize = 13.sp,
-                            fontFamily = modernFont,
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
+                val velocityText = if (entity.velocity < 0.1f) "Stationary" else String.format("%.2f m/s", entity.velocity)
+
+                InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_compass, "Direction", direction)
+                InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_directions, "Heading", if (entity.direction == "IDLE") "Standing Still" else entity.direction)
+                InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_body_scan, "Status", speed)
+                InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_location, "Distance", String.format("%.1f blocks", distance))
+                InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_map_pin, "Location", "(${ceil(entity.coords.x).toInt()}, ${ceil(entity.coords.y).toInt()}, ${ceil(entity.coords.z).toInt()})")
+                InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_line_height, "Height", entity.relativeHeight)
+                InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_clock, "Tracked", timeText)
+                InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_gauge, "Velocity", velocityText)
+                if (entity.minDistance < Float.MAX_VALUE) {
+                    InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_arrows_minimize, "Min Distance", String.format("%.1f blocks", entity.minDistance))
+                }
+                if (entity.maxDistance > 0f) {
+                    InfoRowWithIcon(ir.alirezaivaz.tablericons.R.drawable.ic_arrows_maximize, "Max Distance", String.format("%.1f blocks", entity.maxDistance))
                 }
             }
+        }
+    }
 
-            Spacer(modifier = Modifier.height(8.dp))
+    @Composable
+    private fun ActionButtons(entity: EntityStorage.EntityInfo) {
+        var isSelected by remember { mutableStateOf(SelectedMobsManager.isSelected(entity.id)) }
 
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             Button(
                 onClick = {
-                    if (isSpectating) {
-                        isSpectating = false
+                    if (isSelected) {
+                        SelectedMobsManager.unselectMob(entity.id)
+                        isSelected = false
                     } else {
-                        onSpectateEntity(entity)
-                        isSpectating = true
+                        SelectedMobsManager.selectMob(entity)
+                        isSelected = true
                     }
                 },
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .weight(1f)
                     .height(52.dp),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isSpectating) Color(0xFFE81123) else Color(0xFF9B59B6),
+                    containerColor = if (isSelected) Color(0xFFFFB800) else KitsuSurfaceVariant,
+                    contentColor = if (isSelected) Color.Black else KitsuOnSurface
+                )
+            ) {
+                Icon(
+                    painter = painterResource(id = if (isSelected) ir.alirezaivaz.tablericons.R.drawable.ic_star_filled else ir.alirezaivaz.tablericons.R.drawable.ic_star),
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = if (isSelected) "Selected" else "Select",
+                    style = TextStyle(
+                        fontSize = 13.sp,
+                        fontFamily = modernFont,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+            }
+
+            Button(
+                onClick = {
+                    if (isFollowing) {
+                        onStopFollowing()
+                        isFollowing = false
+                    } else {
+                        onFollowEntity(entity)
+                        isFollowing = true
+                    }
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (isFollowing) Color(0xFFE81123) else KitsuPrimary,
                     contentColor = Color.White
                 )
             ) {
                 Icon(
-                    painter = painterResource(id = if (isSpectating) R.drawable.cross_circle_24 else ir.alirezaivaz.tablericons.R.drawable.ic_eye),
+                    painter = painterResource(id = if (isFollowing) R.drawable.cross_circle_24 else R.drawable.moon_stars_24),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = if (isSpectating) "Stop Spectating" else "Spectate Entity",
+                    text = if (isFollowing) "Stop" else "Follow",
                     style = TextStyle(
                         fontSize = 13.sp,
                         fontFamily = modernFont,
@@ -1077,7 +934,45 @@ class EntityRadarOverlay(
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(
+            onClick = {
+                if (isSpectating) {
+                    isSpectating = false
+                } else {
+                    onSpectateEntity(entity)
+                    isSpectating = true
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(52.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = if (isSpectating) Color(0xFFE81123) else Color(0xFF9B59B6),
+                contentColor = Color.White
+            )
+        ) {
+            Icon(
+                painter = painterResource(id = if (isSpectating) R.drawable.cross_circle_24 else ir.alirezaivaz.tablericons.R.drawable.ic_eye),
+                contentDescription = null,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = if (isSpectating) "Stop Spectating" else "Spectate Entity",
+                style = TextStyle(
+                    fontSize = 13.sp,
+                    fontFamily = modernFont,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+        }
     }
+
+    // ── Info row ─────────────────────────────────────────────────
 
     @Composable
     private fun InfoRowWithIcon(iconRes: Int, label: String, value: String) {
@@ -1121,100 +1016,20 @@ class EntityRadarOverlay(
         }
     }
 
-    private fun getCardinalDirection(dx: Float, dz: Float): String {
-        val angle = Math.toDegrees(atan2(dz.toDouble(), dx.toDouble()))
-        val normalizedAngle = (angle + 360) % 360
-
-        return when {
-            normalizedAngle < 22.5 || normalizedAngle >= 337.5 -> "East"
-            normalizedAngle < 67.5 -> "South-East"
-            normalizedAngle < 112.5 -> "South"
-            normalizedAngle < 157.5 -> "South-West"
-            normalizedAngle < 202.5 -> "West"
-            normalizedAngle < 247.5 -> "North-West"
-            normalizedAngle < 292.5 -> "North"
-            else -> "North-East"
-        }
-    }
-
-    @Composable
-    private fun EntityImage(
-        imagePath: String,
-        contentDescription: String,
-        size: androidx.compose.ui.unit.Dp
-    ) {
-        val context = LocalContext.current
-        val bitmap = remember(imagePath) {
-            try {
-                val cleanPath = imagePath.removePrefix("/")
-                val inputStream = context.assets.open(cleanPath)
-                val bmp = BitmapFactory.decodeStream(inputStream)
-                inputStream.close()
-                bmp
-            } catch (e: Exception) {
-                Log.e("EntityRadarOverlay", "Failed to load: $imagePath", e)
-                null
-            }
-        }
-
-        if (bitmap != null) {
-            Image(
-                bitmap = bitmap.asImageBitmap(),
-                contentDescription = contentDescription,
-                modifier = Modifier.size(size)
-            )
-        } else {
-            PlaceholderIcon(size)
-        }
-    }
-
-    @Composable
-    private fun PlaceholderIcon(size: androidx.compose.ui.unit.Dp = 32.dp) {
-        Icon(
-            painter = painterResource(id = R.drawable.moon_stars_24),
-            contentDescription = "No Image",
-            tint = KitsuOnSurfaceVariant.copy(alpha = 0.5f),
-            modifier = Modifier.size(size)
-        )
-    }
+    // ── Empty state — NO animations ──────────────────────────────
 
     @Composable
     private fun EmptyState() {
-        val infiniteTransition = rememberInfiniteTransition(label = "emptyStatePulse")
-        val alpha by infiniteTransition.animateFloat(
-            initialValue = 0.3f,
-            targetValue = 0.5f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(1500, easing = FastOutSlowInEasing),
-                repeatMode = RepeatMode.Reverse
-            ),
-            label = "emptyAlpha"
-        )
-
-        val scale by infiniteTransition.animateFloat(
-            initialValue = 1f,
-            targetValue = 1.1f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(2000, easing = FastOutSlowInEasing),
-                repeatMode = RepeatMode.Reverse
-            ),
-            label = "emptyScale"
-        )
-
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(
                     painter = painterResource(id = R.drawable.moon_stars_24),
                     contentDescription = "No Entities",
-                    tint = KitsuOnSurfaceVariant.copy(alpha = alpha),
-                    modifier = Modifier
-                        .size(56.dp)
-                        .scale(scale)
+                    tint = KitsuOnSurfaceVariant.copy(alpha = 0.4f),
+                    modifier = Modifier.size(56.dp)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
@@ -1239,35 +1054,20 @@ class EntityRadarOverlay(
         }
     }
 
+    // ── Close button — NO animations ─────────────────────────────
+
     @Composable
     private fun CloseButton(onClick: () -> Unit) {
-        var isPressed by remember { mutableStateOf(false) }
-
-        val backgroundColor by animateColorAsState(
-            targetValue = if (isPressed) Color(0xFFE81123) else Color(0xFFE81123).copy(alpha = 0.9f),
-            animationSpec = tween(durationMillis = 150),
-            label = "closeButtonColor"
-        )
-
-        val scale by animateFloatAsState(
-            targetValue = if (isPressed) 0.95f else 1f,
-            animationSpec = tween(durationMillis = 100),
-            label = "closeButtonScale"
-        )
-
         Box(
             modifier = Modifier
                 .size(32.dp)
-                .scale(scale)
                 .clip(CircleShape)
-                .background(backgroundColor)
+                .background(Color(0xFFE81123))
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    isPressed = true
-                    onClick()
-                },
+                    indication = null,
+                    onClick = onClick
+                ),
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -1277,14 +1077,9 @@ class EntityRadarOverlay(
                 modifier = Modifier.size(16.dp)
             )
         }
-
-        LaunchedEffect(isPressed) {
-            if (isPressed) {
-                delay(100)
-                isPressed = false
-            }
-        }
     }
+
+    // ── Selected mobs list view ──────────────────────────────────
 
     @Composable
     private fun SelectedMobsListView(
@@ -1359,7 +1154,7 @@ class EntityRadarOverlay(
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(selectedMobs) { selectedMob ->
+                    items(selectedMobs, key = { it.mobId }) { selectedMob ->
                         val currentEntity = entities[selectedMob.mobId]
                         val isInRange = currentEntity != null
 
@@ -1423,7 +1218,7 @@ class EntityRadarOverlay(
                                         }
 
                                         Text(
-                                            text = if (isInRange) "In range • $timeText" else "Out of range • $timeText",
+                                            text = if (isInRange) "In range \u2022 $timeText" else "Out of range \u2022 $timeText",
                                             style = TextStyle(
                                                 fontSize = 11.sp,
                                                 fontFamily = modernFont,
@@ -1449,5 +1244,67 @@ class EntityRadarOverlay(
                 }
             }
         }
+    }
+
+    // ── Helper: cardinal direction ───────────────────────────────
+
+    private fun getCardinalDirection(dx: Float, dz: Float): String {
+        val angle = Math.toDegrees(atan2(dz.toDouble(), dx.toDouble()))
+        val normalizedAngle = (angle + 360) % 360
+        return when {
+            normalizedAngle < 22.5 || normalizedAngle >= 337.5 -> "East"
+            normalizedAngle < 67.5 -> "South-East"
+            normalizedAngle < 112.5 -> "South"
+            normalizedAngle < 157.5 -> "South-West"
+            normalizedAngle < 202.5 -> "West"
+            normalizedAngle < 247.5 -> "North-West"
+            normalizedAngle < 292.5 -> "North"
+            else -> "North-East"
+        }
+    }
+
+    // ── Helper: entity image from assets ─────────────────────────
+
+    @Composable
+    private fun EntityImage(
+        imagePath: String,
+        contentDescription: String,
+        size: androidx.compose.ui.unit.Dp
+    ) {
+        val context = LocalContext.current
+        val bitmap = remember(imagePath) {
+            try {
+                val cleanPath = imagePath.removePrefix("/")
+                val inputStream = context.assets.open(cleanPath)
+                val bmp = BitmapFactory.decodeStream(inputStream)
+                inputStream.close()
+                bmp
+            } catch (e: Exception) {
+                Log.e("EntityRadarOverlay", "Failed to load: $imagePath", e)
+                null
+            }
+        }
+
+        if (bitmap != null) {
+            Image(
+                bitmap = bitmap.asImageBitmap(),
+                contentDescription = contentDescription,
+                modifier = Modifier.size(size)
+            )
+        } else {
+            PlaceholderIcon(size)
+        }
+    }
+
+    // ── Helper: placeholder icon ─────────────────────────────────
+
+    @Composable
+    private fun PlaceholderIcon(size: androidx.compose.ui.unit.Dp = 32.dp) {
+        Icon(
+            painter = painterResource(id = R.drawable.moon_stars_24),
+            contentDescription = "No Image",
+            tint = KitsuOnSurfaceVariant.copy(alpha = 0.5f),
+            modifier = Modifier.size(size)
+        )
     }
 }
