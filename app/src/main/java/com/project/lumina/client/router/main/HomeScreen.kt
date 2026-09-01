@@ -315,7 +315,7 @@ private fun LeftPanel(
     state: HomeScreenState,
     isCompactScreen: Boolean,
     leftColumnWidth: Float,
-    captureModeModel: com.project.lumina.client.viewmodel.CaptureModeModel,
+    captureModeModel: CaptureModeModel,
     showNotification: (String, NotificationType) -> Unit,
     onTabSelected: (String) -> Unit,
     onShowZeqa: () -> Unit,
@@ -433,7 +433,7 @@ private fun RightPanel(
     isCompactScreen: Boolean,
     context: android.content.Context,
     scope: kotlinx.coroutines.CoroutineScope,
-    captureModeModel: com.project.lumina.client.viewmodel.CaptureModeModel,
+    captureModeModel: CaptureModeModel,
     httpClient: HttpClient,
     mainScreenViewModel: MainScreenViewModel,
     sharedPreferences: SharedPreferences,
@@ -632,7 +632,7 @@ private fun AccountBanner(isCompactScreen: Boolean) {
 
 @Composable
 private fun SelectedServerCard(
-    captureModeModel: com.project.lumina.client.viewmodel.CaptureModeModel,
+    captureModeModel: CaptureModeModel,
     isCompactScreen: Boolean
 ) {
     Card(
