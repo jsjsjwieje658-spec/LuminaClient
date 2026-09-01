@@ -180,9 +180,7 @@ fun HomeScreen(
     val disableAuthRequired = remember {
         sharedPreferences.getBoolean("disableAuthRequiredEnabled", false)
     }
-    val isAccountLoggedIn by remember(AccountManager.currentAccount, disableAuthRequired) {
-        AccountManager.currentAccount != null || disableAuthRequired
-    }
+    val isAccountLoggedIn = AccountManager.currentAccount != null || disableAuthRequired
 
     // Service activation → dismiss bottom sheet
     LaunchedEffect(Services.isActive) {
